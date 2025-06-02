@@ -21,7 +21,7 @@ object MapReduceCatsEffect extends IOApp {
         IO.blocking {
             Using(Source.fromFile(f)) {
                 source => source
-                  .getLines()
+                  .getLines
                   .toList
                   .flatMap(line => line.split(' '))
                   .map(line => line.filterNot(_.isDigit))
