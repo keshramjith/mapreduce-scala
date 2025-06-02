@@ -1,12 +1,12 @@
 package example
 
-import cats.effect.IOApp
-import cats.effect.ExitCode
-import cats.effect.IO
+import java.io.File
+import scala.io.Source
 
-object MapReduce extends IOApp {
-    override def run(args: List[String]): IO[ExitCode] =
-        for {
-            _ <- IO.println("Hello from cats-effects 3.6.1")
-        } yield ExitCode.Success
+object MapReduce {
+    def main(args: Array[String]): Unit =
+        var file = new File(args.head)
+        var it = Source.fromFile(file).getLines
+        while it.hasNext do
+            println(it.next)
 }
