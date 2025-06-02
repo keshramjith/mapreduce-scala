@@ -20,7 +20,13 @@ object MapReduceCatsEffect extends IOApp {
     def gatherLines(f: File): IO[List[String]] =
         IO.blocking {
             Using(Source.fromFile(f)) {
-                source => source.getLines().toList
+                source => source
+                  .getLines()
+                  .toList
+                  .flatMap(line => line.split(' '))
+                  .map(line => line.filterNot(_.isDigit))
+                  .map(word => word.replaceAll("\\W", ""))
+                  .filterNot(_.isEmpty)
             }.recover {
                 case ex =>
                     println(s"Error reading file: ${ex.getMessage}")
