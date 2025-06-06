@@ -7,6 +7,7 @@ import cats.effect.ExitCode
 import cats.effect.std.Console
 import scala.io.Source
 import scala.util.Using
+import scala.collection.mutable.MultiMap
 
 object MapReduceCatsEffect extends IOApp {
     override def run(args: List[String]): IO[ExitCode] =
@@ -14,7 +15,8 @@ object MapReduceCatsEffect extends IOApp {
             _ <- IO.println("Starting")
             file = new File(args(1))
             lines <- gatherLines(file)
-            _ <- IO.println(lines)
+            wordOccurences = countWordOccurence(lines)
+            _ <- IO.println(wordOccurences)
         } yield ExitCode.Success
 
     def gatherLines(f: File): IO[List[String]] =
@@ -33,4 +35,10 @@ object MapReduceCatsEffect extends IOApp {
                     List.empty[String]
             }.get
         }
+
+    def countWordOccurence(words: List[String]): Map[String, Int] =
+        var wordOccurenceMap = Map[String, Int]()
+        words.foreach(word => wordOccurenceMap += (word -> 1))
+        wordOccurenceMap
+
 }
